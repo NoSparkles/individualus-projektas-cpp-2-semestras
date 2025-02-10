@@ -1,5 +1,5 @@
 #include <iostream>
-#include <string>
+#include <iomanip>
 #include <assert.h>
 
 using namespace std;
@@ -47,6 +47,12 @@ public:
 
     double getArea() const {
         return area;
+    }
+
+    string to_string() const {
+        stringstream ss;
+        ss << "Rooms: " << rooms << ", Address: " << address << ", Area: " << fixed << setprecision(2) << area;
+        return ss.str();
     }
 };
 
