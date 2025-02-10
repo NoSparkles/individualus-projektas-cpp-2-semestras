@@ -10,7 +10,7 @@ private:
     string address;
     double area;
 public:
-    House(unsigned rooms = 1, string address = "", double area = 0) {
+    House(unsigned rooms = 1, const string& address = "", double area = 0) {
         this->setRooms(rooms);
         this->setAddress(address);
         this->setArea(area);
@@ -23,7 +23,7 @@ public:
         this->rooms = rooms;
     }
 
-    void setAddress(string address) {
+    void setAddress(const string& address) {
         if (address.length() == 0 || address.length() > 50) {
             return;
         }
@@ -31,7 +31,7 @@ public:
     }
 
     void setArea(double area) {
-        if (area) {
+        if (area <= 0) {
             return;
         }
         this->area = area;
@@ -45,7 +45,7 @@ public:
         return address;
     }
 
-    double getArea() {
+    double getArea() const {
         return area;
     }
 };
