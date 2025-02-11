@@ -10,10 +10,19 @@ private:
     string address;
     double area;
 public:
-    House(unsigned rooms = 1, const string& address = "", double area = 0) {
+    House(unsigned rooms, const string& address, double area) {
         this->setRooms(rooms);
         this->setAddress(address);
         this->setArea(area);
+    }
+
+    House(unsigned rooms, double area) {
+        this->setRooms(rooms);
+        this->setAddress("Unknown");
+        this->setArea(area);
+    }
+
+    ~House() {
     }
 
     void setRooms(unsigned rooms) {
@@ -57,7 +66,6 @@ public:
 };
 
 int main() {
-
     
     return 0;
 }
