@@ -58,21 +58,21 @@ public:
 
     void setRooms(unsigned rooms) {
         if (rooms < 1) {
-            return;
+            throw invalid_argument("Rooms must be greater than 0");
         }
         this->rooms = rooms;
     }
 
     void setAddress(const string& address) {
         if (address.length() == 0 || address.length() > 50) {
-            return;
+            throw invalid_argument("Address must be between 1 and 50 characters");
         }
         this->address = address;
     }
 
     void setArea(double area) {
-        if (area <= 0) {
-            return;
+        if (area < 0) {
+            throw invalid_argument("Area must be greater than 0");
         }
         this->area = area;
     }
