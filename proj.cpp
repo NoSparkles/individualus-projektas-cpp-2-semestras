@@ -45,14 +45,14 @@ public:
     }
 
     ~House() {
-        --House::count;
+        House::setCount(House::count - 1);
     }
 
     static unsigned getCount() {
         return House::count;
     }
 
-    unsigned getId() {
+    unsigned getId() const {
         return this->id;
     }
 
@@ -77,11 +77,11 @@ public:
         this->area = area;
     }
 
-    unsigned getRooms() {
+    unsigned getRooms() const {
         return rooms;
     }
 
-    string getAddress() {
+    string getAddress() const {
         return address;
     }
 
