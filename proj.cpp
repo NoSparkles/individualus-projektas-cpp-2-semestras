@@ -5,62 +5,62 @@
 
 using namespace std;
 
-class House {
+class Building {
 private:
     static unsigned count;
     static unsigned nextId;
     unsigned id;
-    unsigned rooms;
+    unsigned numberOfFloors;
     string address;
     double area;
 
     static void setCount(unsigned count) {
-        House::count = count;
+        Building::count = count;
     }
 
     static void setNextId(unsigned nextId) {
-        House::nextId = nextId;
+        Building::nextId = nextId;
     }
 
     void setId(unsigned id) {
         this->id = id;
     }
 public:
-    House(unsigned rooms, const string& address, double area) {
-        this->setId(nextId);
-        House::setCount(House::count + 1);
-        House::setNextId(House::nextId + 1);
-        this->setRooms(rooms);
+    Building(unsigned numberOfFloors, const string& address, double area) {
+        this->setId(Building::nextId);
+        Building::setCount(Building::count + 1);
+        Building::setNextId(Building::nextId + 1);
+        this->setNumberOfFloors(numberOfFloors);
         this->setAddress(address);
         this->setArea(area);
     }
 
-    House(unsigned rooms, double area) {
-        this->setId(nextId);
-        House::setCount(House::count + 1);
-        House::setNextId(House::nextId + 1);
-        this->setRooms(rooms);
+    Building(unsigned numberOfFloors, double area) {
+        this->setId(Building::nextId);
+        Building::setCount(Building::count + 1);
+        Building::setNextId(Building::nextId + 1);
+        this->setNumberOfFloors(numberOfFloors);
         this->setAddress("Unknown");
         this->setArea(area);
     }
 
-    ~House() {
-        House::setCount(House::count - 1);
+    ~Building() {
+        Building::setCount(Building::count - 1);
     }
 
     static unsigned getCount() {
-        return House::count;
+        return Building::count;
     }
 
     unsigned getId() const {
         return this->id;
     }
 
-    void setRooms(unsigned rooms) {
-        if (rooms < 1) {
-            throw invalid_argument("Rooms must be greater than 0");
+    void setNumberOfFloors(unsigned numberOfFloors) {
+        if (numberOfFloors < 1) {
+            throw invalid_argument("Number of floors must be greater than 0");
         }
-        this->rooms = rooms;
+        this->numberOfFloors = numberOfFloors;
     }
 
     void setAddress(const string& address) {
@@ -77,85 +77,72 @@ public:
         this->area = area;
     }
 
-    unsigned getRooms() const {
-        return rooms;
+    unsigned getNumberOfFloors() const {
+        return this->numberOfFloors;
     }
 
     string getAddress() const {
-        return address;
+        return this->address;
     }
 
     double getArea() const {
-        return area;
+        return this->area;
     }
 
     string to_string() const {
         stringstream ss;
-        ss << "Rooms: " << rooms << ", Address: " << address << ", Area: " << fixed << setprecision(2) << area;
+        ss << "Number of Floors: " << this->numberOfFloors << ", Address: " << this->address << ", Area: " << fixed << setprecision(2) << this->area;
         return ss.str();
     }
 };
-unsigned House::count = 0;
-unsigned House::nextId = 1;
+unsigned Building::count = 0;
+unsigned Building::nextId = 1;
 
 int main() {
-    // Create an array of House objects
-    House* houses = new House[5]{
-        House(3, "123 Main St", 120.5),
-        House(4, "456 Elm St", 150.0),
-        House(2, "789 Oak St", 90.0),
-        House(5, "101 Maple St", 200.0),
-        House(3, 110.0)
+    Building* buildings = new Building[5]{
+        Building(3, "123 Main St", 120.5),
+        Building(4, "456 Elm St", 150.0),
+        Building(2, "789 Oak St", 90.0),
+        Building(5, "101 Maple St", 200.0),
+        Building(3, 110.0)
     };
 
-    // Test the count of houses
-    assert(House::getCount() == 5);
+    assert(Building::getCount() == 5);
 
-    // Test the methods of House class
-    assert(houses[0].getRooms() == 3);
-    assert(houses[0].getAddress() == "123 Main St");
-    assert(houses[0].getArea() == 120.5);
-    assert(houses[4].getRooms() == 3);
-    assert(houses[4].getAddress() == "Unknown");
-    assert(houses[4].getArea() == 110.0);
+    assert(buildings[0].getNumberOfFloors() == 3);
+    assert(buildings[0].getAddress() == "123 Main St");
+    assert(buildings[0].getArea() == 120.5);
+    assert(buildings[4].getNumberOfFloors() == 3);
+    assert(buildings[4].getAddress() == "Unknown");
+    assert(buildings[4].getArea() == 110.0);
 
-    // Test the to_string method
-    assert(houses[0].to_string() == "Rooms: 3, Address: 123 Main St, Area: 120.50");
+    assert(buildings[0].to_string() == "Number of Floors: 3, Address: 123 Main St, Area: 120.50");
 
-    // Test setters
-    houses[0].setRooms(4);
-    houses[0].setAddress("123 Elm St");
-    houses[0].setArea(150.0);
-    assert(houses[0].getRooms() == 4);
-    assert(houses[0].getAddress() == "123 Elm St");
-    assert(houses[0].getArea() == 150.0);
+    buildings[0].setNumberOfFloors(4);
+    buildings[0].setAddress("123 Elm St");
+    buildings[0].setArea(150.0);
+    assert(buildings[0].getNumberOfFloors() == 4);
+    assert(buildings[0].getAddress() == "123 Elm St");
+    assert(buildings[0].getArea() == 150.0);
 
-    // Create a new House object
-    House *newHouse = new House(4, "123 Elm St", 150.0);
+    Building *newBuilding = new Building(4, "123 Elm St", 150.0);
 
-    // Test the count of houses
-    assert(House::getCount() == 6);
+    assert(Building::getCount() == 6);
 
-    // Delete the new house object
-    delete newHouse;
+    delete newBuilding;
 
-    //create a new house object
-    House *newHouse2 = new House(4, "123 Elm St", 150.0);
+    Building *newBuilding2 = new Building(4, "123 Elm St", 150.0);
 
-    // Test the count of houses
-    assert(House::getCount() == 6);
-    assert(newHouse2->getId() == 7);
+    assert(Building::getCount() == 6);
+    assert(newBuilding2->getId() == 7);
     
-    delete newHouse2;
+    delete newBuilding2;
 
-    // Test the count of houses after deleting the new house object
-    assert(House::getCount() == 5);
+    assert(Building::getCount() == 5);
     
-    // Clean up dynamically allocated memory
-    delete[] houses;
+    delete[] buildings;
 
-    // Test the count of houses after deleting the array of houses
-    assert(House::getCount() == 0);
+    assert(Building::getCount() == 0);
     
     return 0;
 }
