@@ -1,3 +1,5 @@
+// Robert Šatkevič
+
 #include <iostream>
 #include <iomanip>
 #include <assert.h>
@@ -10,41 +12,20 @@ private:
     static unsigned nextId;
     unsigned id;
     unsigned numberOfFloors;
-    string address;
     double area;
-
-    static void setCount(unsigned count) {
-        Building::count = count;
-    }
-
-    static void setNextId(unsigned nextId) {
-        Building::nextId = nextId;
-    }
-
-    void setId(unsigned id) {
-        this->id = id;
-    }
+    string address;
+    
 public:
-    Building(unsigned numberOfFloors, const string& address, double area) {
-        this->setId(Building::nextId);
-        Building::setCount(Building::count + 1);
-        Building::setNextId(Building::nextId + 1);
-        this->setNumberOfFloors(numberOfFloors);
-        this->setAddress(address);
-        this->setArea(area);
+    Building(unsigned numberOfFloors, double area) {
+        this->init(numberOfFloors, area, "Unknown");
     }
 
-    Building(unsigned numberOfFloors, double area) {
-        this->setId(Building::nextId);
-        Building::setCount(Building::count + 1);
-        Building::setNextId(Building::nextId + 1);
-        this->setNumberOfFloors(numberOfFloors);
-        this->setAddress("Unknown");
-        this->setArea(area);
+    Building(unsigned numberOfFloors, double area, const string& address) {
+        this->init(numberOfFloors, area, address);
     }
 
     ~Building() {
-        Building::setCount(Building::count - 1);
+        Building::decreaseCount();
     }
 
     static unsigned getCount() {
@@ -53,6 +34,18 @@ public:
 
     unsigned getId() const {
         return this->id;
+    }
+
+    unsigned getNumberOfFloors() const {
+        return this->numberOfFloors;
+    }
+
+    double getArea() const {
+        return this->area;
+    }
+
+    string getAddress() const {
+        return this->address;
     }
 
     void setNumberOfFloors(unsigned numberOfFloors) {
@@ -76,22 +69,36 @@ public:
         this->area = area;
     }
 
-    unsigned getNumberOfFloors() const {
-        return this->numberOfFloors;
-    }
-
-    string getAddress() const {
-        return this->address;
-    }
-
-    double getArea() const {
-        return this->area;
-    }
-
     string to_string() const {
         stringstream ss;
         ss << "Number of Floors: " << this->numberOfFloors << ", Address: " << this->address << ", Area: " << fixed << setprecision(2) << this->area;
         return ss.str();
+    }
+
+private:
+    void init(unsigned numberOfFloors, double area,  const string& address) {
+        this->setId();
+        this->setNumberOfFloors(numberOfFloors);
+        this->setAddress(address);
+        this->setArea(area);
+        Building::increaseCount();
+        Building::setNextId();
+    }
+
+    static void increaseCount() {
+        ++Building::count;
+    }
+    
+    static void decreaseCount() {
+        --Building::count;
+    }
+
+    static void setNextId() {
+        ++Building::nextId;
+    }
+
+    void setId() {
+        this->id = nextId;
     }
 };
 unsigned Building::count = 0;
@@ -99,10 +106,10 @@ unsigned Building::nextId = 1;
 
 int main() {
     Building* buildings = new Building[5]{
-        Building(3, "123 Main St", 120.5),
-        Building(4, "456 Elm St", 150.0),
-        Building(2, "789 Oak St", 90.0),
-        Building(5, "101 Maple St", 200.0),
+        Building(3, 120.5, "123 Main St"),
+        Building(4, 150.0, "456 Elm St"),
+        Building(2, 90.0, "789 Oak St"),
+        Building(5, 200.0, "101 Maple St"),
         Building(3, 110.0)
     };
 
@@ -124,13 +131,13 @@ int main() {
     assert(buildings[0].getAddress() == "123 Elm St");
     assert(buildings[0].getArea() == 150.0);
 
-    Building *newBuilding = new Building(4, "123 Elm St", 150.0);
+    Building *newBuilding = new Building(4, 150.0, "123 Elm St");
 
     assert(Building::getCount() == 6);
 
     delete newBuilding;
 
-    Building *newBuilding2 = new Building(4, "123 Elm St", 150.0);
+    Building *newBuilding2 = new Building(4, 150.0, "123 Elm St");
 
     assert(Building::getCount() == 6);
     assert(newBuilding2->getId() == 7);
